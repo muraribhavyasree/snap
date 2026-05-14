@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 import Complaint from "../models/Complaint.js";
-
+import Officer from "../models/Officer.js";
 /* ================= ADMIN LOGIN ================= */
 
 export const adminLogin = async (req, res) => {
@@ -186,5 +186,15 @@ export const updateComplaintStatus = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const getAllOfficers = async (req, res) => {
+  try {
+    const officers = await Officer.find();
+
+    res.json(officers);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

@@ -239,7 +239,6 @@ app.put(
 );
 
 /* ───────────────── UNBLOCK USER ───────────────── */
-
 app.put(
   "/api/admin/users/unblock/:id",
   protect,
@@ -346,8 +345,81 @@ app.put(
     res.json({ msg: "Status updated" });
   }
 );
+/* ───────────────── GET ALL OFFICERS ───────────────── */
+app.get(
+  "/api/admin/officers",
+  protect,
+  verifyAdmin,
+  async (req, res) => {
+    try {
+      const officers = db.collection("officers");
 
+      const data = await officers.find().toArray();
+
+      res.json(data);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ msg: "Server Error" });
+    }
+  }
+);
+/* ─────────────── OFFICER LOGIN ─────────────── */
+
+app.post("/api/officer/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const officers = db.collection("officers");
+
+    const officer = await officers.findOne({ email });
+
+    if (!officer) {
+      return res.status(401).json({ msg: "Invalid email or password" });
+    }
+
+    // ❗ Your DB has plain password, so direct compare (NOT SAFE)
+    if (password !== officer.password) {
+      return res.status(401).json({ msg: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { id: officer._id.toString(), role: "officer" },
+      process.env.JWT_SECRET || "secret123",
+      { expiresIn: "7d" }
+    );
+
+    res.json({
+      msg: "Officer login successful",
+      token,
+      officer,
+    });
+  } catch (err) {
+    res.status(500).json({ msg: err.message });
+  }
+});
+
+app.put("/api/admin/assign/:id", protect, verifyAdmin, async (req, res) => {
+  const complaints = db.collection("complaints");
+
+  await complaints.updateOne(
+    { _id: new ObjectId(req.params.id) },
+    { $set: { officerId: new ObjectId(req.body.officerId) } }
+  );
+
+  res.json({ msg: "Officer assigned" });
+});
+
+app.get("/api/officer/complaints", protect, async (req, res) => {
+  const complaints = db.collection("complaints");
+
+  const data = await complaints
+    .find({ officerId: new ObjectId(req.user.id) })
+    .toArray();
+
+  res.json(data);
+});
 /* ───────────────── SERVER ───────────────── */
+
 
 app.get("/", (req, res) => {
   res.send("CivicSnap API running ✅");

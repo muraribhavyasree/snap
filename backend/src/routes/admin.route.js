@@ -7,7 +7,8 @@ import {
   getAllComplaints,
   updateComplaintStatus,
   blockUser,
-  unblockUser
+  unblockUser,
+  getAllOfficers,
 } from "../controllers/adminController.js";
 
 import { verifyAdmin } from "../middleware/authMiddleware.js";
@@ -36,5 +37,6 @@ router.get("/complaints", verifyAdmin, getAllComplaints);
 /* ================= UPDATE STATUS ================= */
 
 router.put("/update-status/:id", verifyAdmin, updateComplaintStatus);
-
+/* ================= GET ALL OFFICERS ================= */
+router.get("/officers", verifyAdmin, getAllOfficers);
 export default router;
