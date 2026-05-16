@@ -198,3 +198,36 @@ export const getAllOfficers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const addOfficer = async (req, res) => {
+  try {
+    const officer = await Officer.create(req.body);
+    res.status(201).json(officer);
+  } catch (error) {
+    res.status(500).json({ message: error.message,});
+  }};
+
+export const deleteOfficer = async (req, res) => {
+  try {
+    const officer = await Officer.findByIdAndDelete(req.params.id);
+    res.json({ message: "Officer deleted successfully" });
+  } catch (error) {    res.status(500).json({ message: error.message });
+  }
+};
+export const getLocations = async (req, res) => {
+  try {
+    const locations = await Location.find();
+    res.json(locations);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const addLocation = async (req, res) => {
+  try {
+    const location = await Location.create(req.body);
+    res.status(201).json(location);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+

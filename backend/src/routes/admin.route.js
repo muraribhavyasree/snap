@@ -9,6 +9,10 @@ import {
   blockUser,
   unblockUser,
   getAllOfficers,
+  addOfficer, 
+  deleteOfficer,
+  addLocation,
+  getLocations,
 } from "../controllers/adminController.js";
 
 import { verifyAdmin } from "../middleware/authMiddleware.js";
@@ -39,4 +43,11 @@ router.get("/complaints", verifyAdmin, getAllComplaints);
 router.put("/update-status/:id", verifyAdmin, updateComplaintStatus);
 /* ================= GET ALL OFFICERS ================= */
 router.get("/officers", verifyAdmin, getAllOfficers);
+/* ================= ADD OFFICER ================= */
+router.post("/officers", verifyAdmin, addOfficer);
+/* ================= DELETE OFFICER ================= */
+router.delete("/officers/:id", verifyAdmin, deleteOfficer);
+router.get("/locations", verifyAdmin, getLocations);
+router.post("/locations", verifyAdmin, addLocation);
+
 export default router;

@@ -27,8 +27,9 @@ export default function AdmindbLayout() {
           <div className="logo-box">
             <img src={logo} alt="CrimeSnap Logo" />
             <h2>CrimeSnap</h2>
+            
           </div>
-
+<h3>ADMIN DASHBOARD</h3>
           <div className="sidebar-menu">
 
             <Link to="/admin/dashboard">📊 Dashboard</Link>
@@ -37,35 +38,27 @@ export default function AdmindbLayout() {
             <Link to="/admin/update-status">🛠️ Update Status</Link>
             <Link to="/admin/officers">👮 Officers</Link>
             <Link to="/admin/locations">📍 Locations</Link>
-
             <Link to="/">🚪 Logout</Link>
-
           </div>
-
         </div>
-
         {/* ADMIN INFO */}
         <div className="sidebar-bottom">
-
           <div className="admin-user">
             <h4>{admin?.name || "ADMIN USER"}</h4>
-
             <p>
               {admin?.role === "admin"
                 ? "Super Administrator"
                 : "User"}
             </p>
           </div>
-
         </div>
-
       </div>
 
       {/* MAIN CONTENT */}
       <div className="admin-main">
 
         <div className="admin-header">
-          <h1>Admin Dashboard</h1>
+          <h1>HELLO {admin?.name || "ADMIN"} </h1>
         </div>
 
         <Outlet />
